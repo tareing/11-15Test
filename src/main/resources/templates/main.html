@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="logo"><a href="http://localhost:8999/">logo</a></div>
+    <div class="content-wrap">
+        <div class="notebook-menu">
+            <ul class="notebook-list">
+                <li th:class="${Notebook.id == targetNotebook.id} ? 'selected-Notebook' : ''"
+                    th:each="Notebook : ${notebookList}">
+                    <a th:href="@{|/notebook/${Notebook.id}|}" th:text="${Notebook.name}"></a>
+                </li>
+                <li th:class="${targetNotebook == null} ? 'selected-Notebook' : ''">
+                    <a href="#" th:text="새메뉴" th:onclick="openNewMenu()"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="side-menu">
+            <ul>
+                <li th:class="${Post.id == targetPost.id} ? 'selected-Post' : ''" th:each="Post : ${postList}">
+                    <a th:href="@{|/detail/${Post.id}|}"  th:style="${Post.id == targetPost.id} ? 'background-color: #FFFF00;' : ''" th:text="${Post.title}"></a>
+                </li>
+            </ul>
+            <div>
+                <form action="/write" method="post">
+                    <input type="submit" value="추가">
+                </form>
+            </div>
+        </div>
+        <div class="content">
+            <form action="/update" method="post">
+                <div>
+                    <input type="hidden" name="id" th:value="${targetPost.id}">
+                </div>
+                <div>
+                    <input type="text" name="title" th:value="${targetPost.title}">
+                </div>
+                <div>
+                    <textarea name="content" cols="30" rows="10" th:text="${targetPost.content}"></textarea>
+                </div>
+                <div>
+                    <input type="submit" value="수정" formaction="/update" id="updateBtn">
+                </div>
+                <div>
+                    <input type="submit" value="삭제" formaction="/delete" id="deleteBtn">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
